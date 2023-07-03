@@ -1,0 +1,85 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import re
+
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/process_text', methods=['POST', 'OPTIONS'])
+def process_text():
+    if request.method == 'OPTIONS':
+        response = jsonify({'message': 'CORS preflight request handled'})
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+        response.headers.add('Access-Control-Allow-Methods', 'POST')
+        return response
+
+    try:
+        # Handle the POST request and extract phone numbers
+        text1 = request.json['text1']
+        text2 = request.json['text2']
+        num_lists = request.json['num_lists']
+
+        phone_numbers1 = extract_phone_numbers(text1)
+        phone_numbers2 = extract_phone_numbers(text2)
+
+        # Subtract the phone numbers in text 2 from text 1
+        subtracted_numbers = subtract_phone_numbers(phone_numbers1, phone_numbers2)
+
+        # Divide subtracted numbers into equal lists
+        divided_lists = divide_phone_numbers(subtracted_numbers, num_lists)
+
+        # Prepare the response
+        response_data = {
+            'num_phones': len(subtracted_numbers),
+            'phone_lists': divided_lists
+        }
+
+        # Return the response
+        return jsonify(response_data)
+
+    except Exception as e:
+        error_message = f"Error processing text: {str(e)}"
+        return jsonify({'error': error_message}), 500
+
+def extract_phone_numbers(text):
+    # Use regular expressions to extract phone numbers from the text
+    phone_pattern = re.compile(r'(\+\d+[\d\s()-]+)')
+    phone_numbers = phone_pattern.findall(text)
+    phone_numbers = [''.join(phone) for phone in phone_numbers]
+
+    # Remove duplicates using a set
+    phone_numbers = list(set(phone_numbers))
+
+    return phone_numbers
+
+def subtract_phone_numbers(phone_numbers1, phone_numbers2):
+    # Subtract phone numbers in phone_numbers2 from phone_numbers1
+    subtracted_numbers = list(set(phone_numbers1) - set(phone_numbers2))
+
+    return subtracted_numbers
+
+def divide_phone_numbers(phone_numbers, num_lists):
+    # Calculate the number of phone numbers per list
+    numbers_per_list = len(phone_numbers) // num_lists
+    remainder = len(phone_numbers) % num_lists
+
+    divided_lists = []
+
+    # Divide the phone numbers into equal lists
+    start = 0
+    for i in range(num_lists):
+        sublist_size = numbers_per_list
+        if remainder > 0:
+            sublist_size += 1
+            remainder -= 1
+
+        sublist = phone_numbers[start: start + sublist_size]
+        divided_lists.append(sublist)
+
+        start += sublist_size
+
+    return divided_lists
+
+if __name__ == '__main__':
+    app.run(port=5000)
