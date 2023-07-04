@@ -166,7 +166,7 @@
 
       const data = { text1, text2, num_lists: parseInt(numLists) };
 
-      fetch("http://localhost:5000/process_text", {
+      fetch("http://phone-extractor:5000/process_text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
