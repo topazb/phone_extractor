@@ -4,8 +4,9 @@
   <title>Phone Number Extractor</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Arial Hebrew", Arial, sans-serif; /* Add Hebrew font */
       margin: 20px;
+      direction: rtl; /* Set direction to right-to-left */
     }
 
     h1 {
@@ -24,9 +25,17 @@
       resize: vertical;
     }
 
-    button {
+    input[type="number"] {
+      width: 50px;
+    }
+
+    .button {
       margin-top: 10px;
       padding: 5px 10px;
+      background-color: purple;
+      color: white;
+      border: none;
+      cursor: pointer;
     }
 
     #result {
@@ -36,25 +45,122 @@
     .error {
       color: red;
     }
+
+    .collapsible {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .arrow {
+      width: 15px;
+      height: 15px;
+      margin-right: 5px;
+      border-top: 2px solid black;
+      border-right: 2px solid black;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+    .arrow.collapsed {
+      transform: rotate(-135deg);
+    }
+
+    .collapsible-content {
+      display: none;
+      margin-top: 10px;
+    }
+
+    .collapsible-content.show {
+      display: block;
+    }
+
+    .text-inputs {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
+
+    .text-inputs textarea {
+      margin-bottom: 10px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .logo img {
+      width: 130px;
+      height: 50px;
+      margin-right: 10px;
+      margin-left: 10px;
+    }
+
+    .ltr-text {
+      direction: ltr;
+      text-align: left;
+    }
+
+    .copy-button {
+      margin-top: 10px;
+    }
   </style>
+  <style>
+    /* Add a CSS rule for Hebrew text areas to override the general style */
+    textarea[placeholder="Additional Text"] {
+      direction: rtl;
+      text-align: right;
+      font-family: "Arial Hebrew", Arial, sans-serif; /* Add Hebrew font */
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css?family=Arimo&display=swap" rel="stylesheet"> <!-- Add Hebrew font link -->
 </head>
 <body>
-  <h1>Challenge 22 - Phone Number Extractor</h1>
-  <label for="text1">Whole Whatsapp group:</label>
-  <textarea id="text1" placeholder="Enter the whole group here"></textarea>
-  <br>
-  <label for="text2">Only instructors:</label>
-  <textarea id="text2" placeholder="Enter only the instructors here"></textarea>
-  <br>
-  <label for="numLists">Number of Lists:</label>
-  <input type="number" id="numLists" value="1" min="1">
-  <br>
-  <button onclick="processText()">Extract Phone Numbers</button>
+  <div class="logo">
+    <img src="img/logo.png" alt="Logo">
+    <br>
+    <h1>חלוקת מדריכים אישיים</h1>
+  </div>
+  <div>
+    <label for="text1">קבוצת וואטסאפ מלאה:</label>
+    <textarea id="text1" placeholder="הזן את כל הקבוצה כאן" required></textarea>
+  </div>
+  <div class="text-inputs">
+    <label for="text2">כל המדריכים:</label>
+    <textarea id="text2" placeholder="הזן רק את המדריכים כאן"></textarea>
+    <label for="text3">לא יכולים להדריך באתגר הזה:</label>
+    <textarea id="text3" placeholder="טקסט נוסף"></textarea>
+  </div>
+  <div class="collapsible" onclick="toggleNumberInput()">
+    <div class="arrow collapsed"></div>
+  </div>
+  <div class="collapsible-content" id="numListsContent">
+    <label for="numLists">מספר הרשימות:</label>
+    <input type="number" id="numLists" value="0" min="0">
+  </div>
+  <div>
+    <button class="button" onclick="processText()">חלק לקבוצות!</button>
+  </div>
   <div id="result"></div>
 
   <script>
+    function toggleNumberInput() {
+      const arrow = document.querySelector('.arrow');
+      const numListsContent = document.getElementById('numListsContent');
+
+      arrow.classList.toggle('collapsed');
+      numListsContent.classList.toggle('show');
+    }
+
     function processText() {
       const text1 = document.getElementById("text1").value;
+      if (!text1) {
+        alert("אנא הזן את קבוצת הוואטסאפ המלאה");
+        return;
+      }
+
       const text2 = document.getElementById("text2").value;
       const numLists = document.getElementById("numLists").value;
 
@@ -69,7 +175,7 @@
       })
       .then(response => {
         if (!response.ok) {
-          throw new Error("Error processing text. Please try again.");
+          throw new Error("שגיאה בעיבוד הטקסט. אנא נסה שוב.");
         }
         return response.json();
       })
@@ -77,26 +183,45 @@
       .catch(error => displayError(error.message));
     }
 
-    function displayResult(result) {
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = "";
+function displayResult(result) {
+  const resultDiv = document.getElementById("result");
+  resultDiv.innerHTML = "";
 
-      const numPhones = result.num_phones;
-      const phoneLists = result.phone_lists;
+  const numPhones = result.num_phones;
+  const phoneLists = result.phone_lists;
+  const list2Length = result.list2_length; // Retrieve the length of list 2
 
-      const numPhonesMsg = `Total Phone Numbers Extracted: ${numPhones}`;
-      const phoneListsMsg = phoneLists.map((list, index) => `List ${index + 1}:<br>${list.join("<br>")}`);
+  const dateTimeNode = document.createElement("p");
+  const currentDateTime = new Date();
+  const formattedDateTime = currentDateTime.toLocaleString("he-IL");
+  dateTimeNode.innerHTML = `הנתונים נכונים נכון ל: ${formattedDateTime}`;
+  resultDiv.appendChild(dateTimeNode);
 
-      const numPhonesNode = document.createElement("p");
-      numPhonesNode.innerHTML = numPhonesMsg;
-      resultDiv.appendChild(numPhonesNode);
+  const numPhonesMsg = `סה"כ באתגר: ${numPhones}`;
+  const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
+  const phoneListsMsg = phoneLists.map((list, index) => `רשימה ${index + 1}:<br>${list.join("<br>")}`);
 
-      for (const msg of phoneListsMsg) {
-        const listNode = document.createElement("p");
-        listNode.innerHTML = msg;
-        resultDiv.appendChild(listNode);
-      }
-    }
+  const numPhonesNode = document.createElement("p");
+  numPhonesNode.innerHTML = numPhonesMsg;
+  resultDiv.appendChild(numPhonesNode);
+
+  const list2LengthNode = document.createElement("p");
+  list2LengthNode.innerHTML = list2LengthMsg;
+  resultDiv.appendChild(list2LengthNode);
+
+  const copyButton = document.createElement("button");
+  copyButton.classList.add("button", "copy-button");
+  copyButton.textContent = "העתק";
+  copyButton.addEventListener("click", copyLists);
+  resultDiv.appendChild(copyButton);
+
+  for (const msg of phoneListsMsg) {
+    const listNode = document.createElement("p");
+    listNode.innerHTML = msg;
+    listNode.classList.add("ltr-text");
+    resultDiv.appendChild(listNode);
+  }
+}
 
     function displayError(errorMessage) {
       const resultDiv = document.getElementById("result");
@@ -106,6 +231,17 @@
       errorNode.textContent = errorMessage;
       errorNode.classList.add("error");
       resultDiv.appendChild(errorNode);
+    }
+
+    function copyLists() {
+      const resultDiv = document.getElementById("result");
+      const ltrLists = resultDiv.getElementsByClassName("ltr-text");
+      let copyText = "";
+      for (const list of ltrLists) {
+        copyText += list.innerHTML + "<br>"; // Include new lines
+      }
+      copyText = copyText.replace(/<br>/g, "\n"); // Replace <br> with actual new lines
+      navigator.clipboard.writeText(copyText);
     }
   </script>
 </body>
