@@ -5,7 +5,7 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
-COPY .. .
+COPY . .
 
 # Expose the Flask app port
 EXPOSE 5000
