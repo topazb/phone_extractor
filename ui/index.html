@@ -164,9 +164,10 @@
       }
 
       const text2 = document.getElementById("text2").value;
+      const text3 = document.getElementById("text3").value;
       const numLists = document.getElementById("numLists").value;
 
-      const data = { text1, text2, num_lists: parseInt(numLists) };
+      const data = { text1, text2, text3, num_lists: parseInt(numLists) };
 
       fetch("https://p01--phone-extractor--rzfktjl4by88.code.run/process_text", {
         method: "POST",
@@ -191,7 +192,8 @@ function displayResult(result) {
 
   const numPhones = result.num_phones;
   const phoneLists = result.phone_lists;
-  const list2Length = result.list2_length; // Retrieve the length of list 2
+  const list2Length = result.list2_length;
+  const activeInstructorsLength = result.active_instructors_length; // Retrieve the active_instructors_length
 
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();
@@ -201,6 +203,7 @@ function displayResult(result) {
 
   const numPhonesMsg = `סה"כ באתגר: ${numPhones}`;
   const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
+  const activeInstructorsLengthMsg = `מדריכים פעילים: ${activeInstructorsLength}`; // Create the message for active_instructors_length
   const phoneListsMsg = phoneLists.map((list, index) => `רשימה ${index + 1}:<br>${list.join("<br>")}`);
 
   const numPhonesNode = document.createElement("p");
@@ -210,6 +213,10 @@ function displayResult(result) {
   const list2LengthNode = document.createElement("p");
   list2LengthNode.innerHTML = list2LengthMsg;
   resultDiv.appendChild(list2LengthNode);
+
+  const activeInstructorsLengthNode = document.createElement("p"); // Create a new <p> element for active_instructors_length
+  activeInstructorsLengthNode.innerHTML = activeInstructorsLengthMsg; // Set the message for active_instructors_length
+  resultDiv.appendChild(activeInstructorsLengthNode); // Append the active_instructors_length node
 
   const copyButton = document.createElement("button");
   copyButton.classList.add("button", "copy-button");

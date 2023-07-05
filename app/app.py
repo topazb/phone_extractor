@@ -18,27 +18,29 @@ def process_text():
         # Handle the POST request and extract phone numbers
         text1 = request.json['text1']
         text2 = request.json['text2']
+        text3 = request.json['text3']
         num_lists = request.json['num_lists']
 
         phone_numbers1 = extract_phone_numbers(text1)
         phone_numbers2 = extract_phone_numbers(text2)
+        phone_numbers3 = extract_phone_numbers(text3)
 
-        # Subtract the phone numbers in text 2 from text 1
-        subtracted_numbers = subtract_phone_numbers(phone_numbers1, phone_numbers2)
+        # Subtract the phone numbers in text 3 from text 2
+        active_instructors = subtract_phone_numbers(phone_numbers2, phone_numbers3)
 
         # Update num_lists if it is 0
         if num_lists == 0:
-            num_lists = len(phone_numbers2)
+            num_lists = len(active_instructors)  # Use the length of active_instructors
 
-        # Divide subtracted numbers into equal lists
-        divided_lists = divide_phone_numbers(subtracted_numbers, num_lists)
+        # Divide first list (phone_numbers1) by the length of active_instructors
+        divided_lists = divide_phone_numbers(phone_numbers1, len(active_instructors))
 
         # Prepare the response
         response_data = {
-            'num_phones': len(subtracted_numbers),
+            'num_phones': len(phone_numbers1),
             'phone_lists': divided_lists,
             'list2_length': len(phone_numbers2),
-            'list1_length': len(phone_numbers1)  # Add the length of the first list
+            'active_instructors_length': len(active_instructors)  # Length of active_instructors
         }
 
         # Return the response
