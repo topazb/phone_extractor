@@ -6,7 +6,6 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/process_text', methods=['POST', 'OPTIONS'])
-@app.route('/process_text', methods=['POST', 'OPTIONS'])
 def process_text():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'CORS preflight request handled'})
@@ -90,4 +89,4 @@ def divide_phone_numbers(phone_numbers, num_lists):
     return divided_lists
 
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='0.0.0.0')
