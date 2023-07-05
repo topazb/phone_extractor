@@ -89,4 +89,4 @@ def divide_phone_numbers(phone_numbers, num_lists):
     return divided_lists
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    app.run(host='0.0.0.0',port=5000)
