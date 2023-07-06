@@ -28,19 +28,22 @@ def process_text():
         # Subtract the phone numbers in text 3 from text 2
         active_instructors = subtract_phone_numbers(phone_numbers2, phone_numbers3)
 
-        # Update num_lists if it is 0
-        if num_lists == 0:
-            num_lists = len(active_instructors)  # Use the length of active_instructors
-
-        # Divide first list (phone_numbers1) by the length of active_instructors
-        divided_lists = divide_phone_numbers(phone_numbers1, len(active_instructors))
+        # Update num_lists if it is 0 or active_instructors is empty
+        if num_lists == 0 or len(active_instructors) == 0:
+            num_lists = max(1, num_lists)  # Ensure num_lists is at least 1
+            divided_lists = divide_phone_numbers(phone_numbers1, num_lists)  # Divide into num_lists lists
+        else:
+            divided_lists = divide_phone_numbers(phone_numbers1,
+                                                 len(active_instructors))  # Divide into active_instructors lists
 
         # Prepare the response
         response_data = {
             'num_phones': len(phone_numbers1),
             'phone_lists': divided_lists,
             'list2_length': len(phone_numbers2),
-            'active_instructors_length': len(active_instructors)  # Length of active_instructors
+            'active_instructors_length': len(active_instructors),  # Length of active_instructors
+            'active_instructors': active_instructors  # active_instructors
+
         }
 
         # Return the response
