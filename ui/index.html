@@ -262,7 +262,7 @@
 
       const data = { text1, text2, text3, num_lists: parseInt(numLists) };
 
-      fetch("https://p01--phone-extractor--rzfktjl4by88.code.run/process_text", {
+      fetch("http://127.0.0.1:5000/process_text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -297,7 +297,7 @@ function displayResult(result) {
   const numPhonesMsg = `סה"כ באתגר: ${numPhones}`;
   const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
   const activeInstructorsLengthMsg = `מדריכים פעילים: ${activeInstructorsLength}`; // Create the message for active_instructors_length
-  const phoneListsMsg = phoneLists.map((list, index) => `רשימה ${index + 1}:<br>${list.join("<br>")}`);
+  const phoneListsMsg = phoneLists.map((list, index) => `*קבוצה ${index + 1}:*<br>${list.join("<br>")}`);
 
   const numPhonesNode = document.createElement("p");
   numPhonesNode.innerHTML = numPhonesMsg;
