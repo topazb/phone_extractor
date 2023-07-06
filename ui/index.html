@@ -37,6 +37,7 @@
       color: white;
       border: none;
       cursor: pointer;
+      border-radius: 5px;
     }
 
     #result {
@@ -54,9 +55,10 @@
     }
 
     .arrow {
-      width: 15px;
-      height: 15px;
+      width: 10px;
+      height: 10px;
       margin-right: 5px;
+      margin-left: 5px;
       border-top: 2px solid black;
       border-right: 2px solid black;
       transform: rotate(45deg);
@@ -84,6 +86,7 @@
 
     .text-inputs textarea {
       margin-bottom: 10px;
+      border-radius: 5px;
     }
 
     .logo {
@@ -106,8 +109,68 @@
 
     .copy-button {
       margin-top: 10px;
+      border-radius: 5px;
     }
-  </style>
+.info-button {
+      display: block;
+      width: fit-content;
+      margin-top: 10px;
+      background-color: #CBC3E3;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      text-align: center;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+    }
+
+    .info-button.clicked {
+      background-color: purple; /* Change background color when clicked */
+    }
+
+
+    .info-popup {
+      display: none;
+      position: fixed;
+      background-color: rgba(249, 249, 249, 0.9);
+      border: 1px solid #ddd;
+      padding: 20px;
+      z-index: 1;
+      font-size: 16px;
+      width: 50%;
+      max-width: 600px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      padding: 5px 10px;
+    }
+
+    .info-popup p {
+      margin: 0;
+      margin-bottom: 10px;
+    }
+
+    .info-popup .close-button {
+      display: block;
+      width: fit-content;
+      margin-top: 10px;
+      background-color: lightblue;
+      color: white;
+      font-weight: bold;
+      font-size: 14px;
+      text-align: center;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      background-color: #CBC3E3;
+    }
+
+    .info-button:hover + .info-popup {
+      display: block;
+    }
+</style>
   <style>
     /* Add a CSS rule for Hebrew text areas to override the general style */
     textarea[placeholder="Additional Text"] {
@@ -126,26 +189,56 @@
     <h1>חלוקת מדריכים אישיים</h1>
   </div>
   <div>
+    <div class="info-button" onclick="showInfoPopup()">איך זה עובד?</div> <!-- Update button text here -->
+    <div class="info-popup" id="infoPopup"> <!-- Add the info popup -->
+      <p>1. הכנס/י ל- <a href="https://web.whatsapp.com/" target="_blank">https://web.whatsapp.com</a> (אם יש צורך, סרוק/י את הברקוד דרך הסמארטפון) </p> <!-- Make the URL clickable -->
+      <p>2. פתח/י את הקבוצה של האתגר</p>
+      <p>3. מתחת לשם הקבוצה לחץ/י קליק ימני ו Inspect</p>
+      <p>4. בחלון שנפתח בצד לחץ/י בחלק הכחול קליק ימני Copy -> Copy OuterHTML </p>
+      <p>5. הדבק/י בתיבה הראשונה</p>
+      <div class="close-button" onclick="hideInfoPopup()">הבנתי :)</div>
+    </div>
+  </div>
+  </br>
+  <div>
     <label for="text1">קבוצת וואטסאפ מלאה:</label>
-    <textarea id="text1" placeholder="הזן את כל הקבוצה כאן" required></textarea>
+    <textarea id="text1" placeholder="הכנס/י את רשימת המספרים של כל הקבוצה כאן" required></textarea>
   </div>
   <div class="text-inputs">
-    <label for="text2">כל המדריכים:</label>
-    <textarea id="text2" placeholder="הזן רק את המדריכים כאן"></textarea>
+    <label for="text2">קבוצת וואטסאפ חפירות (מדריכים):</label>
+    <textarea id="text2" placeholder="הכנס/י את רשימת המספרים של קבוצת המדריכים בלבד כאן"></textarea>
     <label for="text3">לא יכולים להדריך באתגר הזה:</label>
-    <textarea id="text3" placeholder="טקסט נוסף"></textarea>
+    <textarea id="text3" placeholder="הכנס/י את המספרים של המדריכים שלא יוכלו להדריך באתגר הזה"></textarea>
   </div>
   <div class="collapsible" onclick="toggleNumberInput()">
     <div class="arrow collapsed"></div>
+    <span>מספר קבוצות קבוע</span>
   </div>
   <div class="collapsible-content" id="numListsContent">
-    <label for="numLists">מספר הרשימות:</label>
+    <label for="numLists">לכמה קבוצות לחלק?</label>
     <input type="number" id="numLists" value="0" min="0">
   </div>
   <div>
     <button class="button" onclick="processText()">חלק לקבוצות!</button>
   </div>
   <div id="result"></div>
+
+  <script>
+    function showInfoPopup() {
+      const infoPopup = document.getElementById('infoPopup');
+      infoPopup.style.display = 'block';
+      const infoButton = document.querySelector('.info-button');
+      infoButton.classList.add('clicked');
+    }
+
+    function hideInfoPopup() {
+      const infoPopup = document.getElementById('infoPopup');
+      infoPopup.style.display = 'none';
+      const infoButton = document.querySelector('.info-button');
+      infoButton.classList.remove('clicked');
+    }
+  </script>
+
 
   <script>
     function toggleNumberInput() {
