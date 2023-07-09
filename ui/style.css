@@ -1,0 +1,174 @@
+body {
+  font-family: "Arial Hebrew", Arial, sans-serif; /* Add Hebrew font */
+  margin: 20px;
+  direction: rtl; /* Set direction to right-to-left */
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+textarea {
+  width: 400px;
+  height: 100px;
+  resize: vertical;
+}
+
+input[type="number"] {
+  width: 50px;
+}
+
+.button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: purple;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+#result {
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+}
+
+.collapsible {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.arrow {
+  width: 10px;
+  height: 10px;
+  margin-right: 5px;
+  margin-left: 5px;
+  border-top: 2px solid black;
+  border-right: 2px solid black;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.arrow.collapsed {
+  transform: rotate(-135deg);
+}
+
+.collapsible-content {
+  display: none;
+  margin-top: 10px;
+}
+
+.collapsible-content.show {
+  display: block;
+}
+
+.text-inputs {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
+}
+
+.text-inputs textarea {
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.logo img {
+  width: 130px;
+  height: 50px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.ltr-text {
+  direction: ltr;
+  text-align: left;
+}
+
+.copy-button {
+  margin-top: 10px;
+  border-radius: 5px;
+}
+.info-button {
+  display: block;
+  width: fit-content;
+  margin-top: 10px;
+  background-color: #CBC3E3;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.info-button.clicked {
+  background-color: purple; /* Change background color when clicked */
+}
+
+
+.info-popup {
+  display: none;
+  position: fixed;
+  background-color: rgba(249, 249, 249, 0.9);
+  border: 1px solid #ddd;
+  padding: 20px;
+  z-index: 1;
+  font-size: 16px;
+  width: 50%;
+  max-width: 600px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  padding: 5px 10px;
+}
+
+.info-popup p {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.info-popup .close-button {
+  display: block;
+  width: fit-content;
+  margin-top: 10px;
+  background-color: lightblue;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: #CBC3E3;
+}
+
+.info-button:hover + .info-popup {
+  display: block;
+}
+
+/* Add a CSS rule for Hebrew text areas to override the general style */
+textarea[placeholder="Additional Text"] {
+  direction: rtl;
+  text-align: right;
+  font-family: 'MyFont', Arial, sans-serif;
+   /* Add Hebrew font */
+}
