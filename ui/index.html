@@ -35,6 +35,12 @@
     <label for="text2">קבוצת וואטסאפ חפירות (מדריכים):</label>
     <textarea id="text2" placeholder="הכנס/י את רשימת המספרים של קבוצת המדריכים בלבד כאן"></textarea>
     <label for="text3">לא יכולים להדריך באתגר הזה:</label>
+  <ul id="numberList"></ul>
+  <div>
+    <input type="text" id="newNumber" placeholder="עוד מספר?">
+    <button onclick="addNumber()">הוסף</button>
+  </div>
+
     <textarea id="text3" placeholder="הכנס/י את המספרים של המדריכים שלא יוכלו להדריך באתגר הזה"></textarea>
   </div>
   <div class="collapsible" onclick="toggleNumberInput()">
@@ -172,6 +178,74 @@ function displayResult(result) {
       copyText = copyText.replace(/<br>/g, "\n"); // Replace <br> with actual new lines
       navigator.clipboard.writeText(copyText);
     }
+  </script>
+
+  <script>
+    let numbers = [];
+
+function displayNumbers() {
+  const numberListElement = document.getElementById('numberList');
+  numberListElement.innerHTML = '';
+
+  for (const number of numbers) {
+    const listItem = document.createElement('li');
+
+    const numberText = document.createTextNode(number);
+    listItem.appendChild(numberText);
+
+    listItem.appendChild(document.createTextNode(' ')); // Add a space
+
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '-';
+    removeButton.addEventListener('click', () => removeNumber(number));
+    listItem.appendChild(removeButton);
+
+    numberListElement.appendChild(listItem);
+  }
+}
+
+function addNumber() {
+  const newNumberInput = document.getElementById('newNumber');
+  const newNumber = newNumberInput.value.trim();
+
+  // Check if the input is a valid 10-digit number
+  const numberRegex = /^\d{10}$/;
+  if (!numberRegex.test(newNumber)) {
+    alert('Invalid number. Please enter a 10-digit number.');
+    return;
+  }
+
+  // Add the number to the list
+  numbers.push(newNumber);
+  displayNumbers();
+
+  // Clear the input field
+  newNumberInput.value = '';
+}
+
+// Listen for keydown event on the input field
+const newNumberInput = document.getElementById('newNumber');
+newNumberInput.addEventListener('keydown', function (event) {
+  if (event.key === 'Enter') {
+    addNumber();
+  }
+});
+
+    function removeNumber(number) {
+      const index = numbers.indexOf(number);
+      if (index > -1) {
+        numbers.splice(index, 1);
+        displayNumbers();
+      }
+    }
+
+    fetch('exclude_numbers.txt')
+      .then(response => response.text())
+      .then(fileContent => {
+        numbers = fileContent.split('\n').map(number => number.trim());
+        displayNumbers();
+      })
+      .catch(error => console.error("Error reading file:", error));
   </script>
 </body>
 </html>
