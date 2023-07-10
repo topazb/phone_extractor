@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>חלוקת מדריכים אישיים</title>
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
   <style type="text/css">
     @import url(style.css);
   </style>
@@ -34,23 +35,20 @@
   <div class="text-inputs">
     <label for="text2">קבוצת וואטסאפ חפירות (מדריכים):</label>
     <textarea id="text2" placeholder="הכנס/י את רשימת המספרים של קבוצת המדריכים בלבד כאן"></textarea>
-    <label for="text3">לא יכולים להדריך באתגר הזה:</label>
-  <ul id="numberList"></ul>
+  </div>
   <div>
+    <label>לא יכללו ברשימה:</label>
+    <ul id="numberList"></ul>
     <input type="text" id="newNumber" placeholder="עוד מספר?">
-    <button onclick="addNumber()">הוסף</button>
+    <button onclick="addNumber()">+</button>
   </div>
+    </br>
 
-    <textarea id="text3" placeholder="הכנס/י את המספרים של המדריכים שלא יוכלו להדריך באתגר הזה"></textarea>
-  </div>
-  <div class="collapsible" onclick="toggleNumberInput()">
-    <div class="arrow collapsed"></div>
-    <span>מספר קבוצות קבוע</span>
-  </div>
-  <div class="collapsible-content" id="numListsContent">
-    <label for="numLists">לכמה קבוצות לחלק?</label>
-    <input type="number" id="numLists" value="0" min="0">
-  </div>
+<div>
+  <label for="numLists">לכמה קבוצות לחלק?</label>
+  <input type="number" id="numLists" value="0" min="0">
+</div>
+
   <div>
     <button class="button" onclick="processText()">חלק לקבוצות!</button>
   </div>
@@ -82,35 +80,35 @@
       numListsContent.classList.toggle('show');
     }
 
-    function processText() {
-      const text1 = document.getElementById("text1").value;
-      if (!text1) {
-        alert("אנא הזן את קבוצת הוואטסאפ המלאה");
-        return;
-      }
+function processText() {
+  const text1 = document.getElementById("text1").value;
+  if (!text1) {
+    alert("אנא הזן את קבוצת הוואטסאפ המלאה");
+    return;
+  }
 
-      const text2 = document.getElementById("text2").value;
-      const text3 = document.getElementById("text3").value;
-      const numLists = document.getElementById("numLists").value;
+  const text2 = document.getElementById("text2").value;
+  const numLists = document.getElementById("numLists").value;
+  const excludeNumbers = numbers; // Retrieve the numbers from the 'numbers' array
 
-      const data = { text1, text2, text3, num_lists: parseInt(numLists) };
+  const data = { text1, text2, num_lists: parseInt(numLists), exclude_numbers: excludeNumbers };
 
-      fetch("https://p01--phone-extractor--rzfktjl4by88.code.run//process_text", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("שגיאה בעיבוד הטקסט. אנא נסה שוב.");
-        }
-        return response.json();
-      })
-      .then(result => displayResult(result))
-      .catch(error => displayError(error.message));
+  fetch("https://p01--phone-extractor--rzfktjl4by88.code.run//process_text"", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error("שגיאה בעיבוד הטקסט. אנא נסה שוב.");
     }
+    return response.json();
+  })
+  .then(result => displayResult(result))
+  .catch(error => displayError(error.message));
+}
 
 function displayResult(result) {
   const resultDiv = document.getElementById("result");
@@ -124,12 +122,13 @@ function displayResult(result) {
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();
   const formattedDateTime = currentDateTime.toLocaleString("he-IL");
+
+  const numPhonesMsg = `סה"כ אנשים בקבוצת האתגר: ${numPhones}`;
+  const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
+  const activeInstructorsLengthMsg = `מדריכים פעילים: ${activeInstructorsLength}`; // Create the message for active_instructors_length
   dateTimeNode.innerHTML = `הנתונים נכונים נכון ל: ${formattedDateTime}`;
   resultDiv.appendChild(dateTimeNode);
 
-  const numPhonesMsg = `סה"כ באתגר: ${numPhones}`;
-  const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
-  const activeInstructorsLengthMsg = `מדריכים פעילים: ${activeInstructorsLength}`; // Create the message for active_instructors_length
   const phoneListsMsg = phoneLists.map((list, index) => `*קבוצה ${index + 1}:*<br>${list.join("<br>")}`);
 
   const numPhonesNode = document.createElement("p");
