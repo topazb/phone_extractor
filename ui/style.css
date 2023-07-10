@@ -1,7 +1,8 @@
+/* Add the Hebrew font and additional styles */
 body {
-  font-family: "Arial Hebrew", Arial, sans-serif; /* Add Hebrew font */
+  font-family: "Arial Hebrew", Arial, sans-serif;
   margin: 20px;
-  direction: rtl; /* Set direction to right-to-left */
+  direction: rtl;
 }
 
 h1 {
@@ -12,26 +13,35 @@ label {
   font-weight: bold;
   margin-bottom: 5px;
   display: block;
+  color: #8D479A; /* Add desired color */
+  font-size: 18px; /* Add desired font size */
 }
 
 textarea {
-  width: 400px;
-  height: 100px;
+  width: 300px; /* Adjust the width as needed */
+  height: 80px; /* Adjust the height as needed */
   resize: vertical;
 }
 
 input[type="number"] {
-  width: 50px;
+  width: 30px; /* Adjust the width as needed */
 }
 
 .button {
   margin-top: 10px;
-  padding: 5px 10px;
-  background-color: purple;
+  padding: 10px 20px; /* Increase padding for larger button */
+  background-color: #8D479A;
   color: white;
   border: none;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.2s ease;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.button:hover {
+  background-color: #F25F3C; /* Change to orange when hovered */
 }
 
 #result {
@@ -105,6 +115,7 @@ input[type="number"] {
   margin-top: 10px;
   border-radius: 5px;
 }
+
 .info-button {
   display: block;
   width: fit-content;
@@ -118,11 +129,13 @@ input[type="number"] {
   padding: 5px 10px;
   border-radius: 5px;
 }
-
-.info-button.clicked {
-  background-color: purple; /* Change background color when clicked */
+.info-button:hover {
+  background-color: #F25F3C; /* Change the background color to orange when hovered */
 }
 
+.info-button.clicked {
+  background-color: #F25F3C;
+}
 
 .info-popup {
   display: none;
@@ -166,9 +179,9 @@ input[type="number"] {
 }
 
 /* Add a CSS rule for Hebrew text areas to override the general style */
-textarea[placeholder="Additional Text"] {
+textarea[placeholder="הכנס/י את הטקסט הנוסף"] {
   direction: rtl;
   text-align: right;
   font-family: 'MyFont', Arial, sans-serif;
-   /* Add Hebrew font */
 }
+
