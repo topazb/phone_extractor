@@ -47,7 +47,7 @@ def process_text():
 
         # Prepare the response
         response_data = {
-            'num_phones': len(phone_numbers1),
+            'num_phones': len(phone_numbers1)+1,
             'phone_lists': divided_lists,
             'list2_length': len(phone_numbers2),
             'active_instructors_length': len(active_instructors),
