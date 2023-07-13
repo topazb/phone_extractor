@@ -29,7 +29,7 @@ input[type="number"] {
 
 .button {
   margin-top: 10px;
-  padding: 10px 20px; /* Increase padding for larger button */
+  padding: 10px 40px; /* Increase padding for larger button */
   background-color: #8D479A;
   color: white;
   border: none;
