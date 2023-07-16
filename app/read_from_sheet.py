@@ -37,6 +37,3 @@ def extract_phone_numbers_sheet():
             phone_numbers.append(phone_number)
 
     return phone_numbers
-
-# Call the function to extract phone numbers
-phone_numbers = extract_phone_numbers_sheet()
