@@ -33,15 +33,15 @@
     <textarea id="text1" placeholder="הכנס/י את רשימת המספרים של כל הקבוצה כאן" required></textarea>
   </div>
   <div class="text-inputs">
-    <label for="text2">קבוצת וואטסאפ חפירות (מדריכים):</label>
+    <label for="text2">שמות המדריכים:</label>
     <textarea id="text2" placeholder="הכנס/י את רשימת המספרים של קבוצת המדריכים בלבד כאן"></textarea>
   </div>
-  <div>
-    <label>לא יכללו ברשימה:</label>
-    <ul id="numberList"></ul>
-    <input type="text" id="newNumber" placeholder="עוד מספר?">
-    <button onclick="addNumber()">+</button>
-  </div>
+<div id="excludeNumbersSection">
+  <label>להוציא מספרים ספציפים:</label>
+  <ul id="numberList"></ul>
+  <input type="text" id="newNumber" placeholder="הכנס/י מספר להוריד מהרשימה">
+  <button onclick="addNumber()">+</button>
+</div>
     </br>
 
 <div>
@@ -137,7 +137,7 @@ function displayResult(result) {
   copyButton.addEventListener("click", copyLists);
   resultDiv.appendChild(copyButton);
 
-  const numPhonesMsg = `סה"כ אנשים בקבוצת האתגר: ${numPhones}`;
+  const numPhonesMsg = `סה"כ מודרכים: ${numPhones}`;
   const numPhonesNode = document.createElement("p");
   numPhonesNode.textContent = numPhonesMsg;
   resultDiv.appendChild(numPhonesNode);
@@ -185,6 +185,10 @@ function displayNumbers() {
 
     numberListElement.appendChild(listItem);
   }
+
+  // Hide the section if the numbers list is empty
+  const excludeNumbersSection = document.getElementById('excludeNumbersSection');
+  excludeNumbersSection.style.display = numbers.length > 0 ? 'block' : 'none';
 }
 
 function addNumber() {
@@ -222,13 +226,6 @@ newNumberInput.addEventListener('keydown', function (event) {
       }
     }
 
-    fetch('exclude_numbers.txt')
-      .then(response => response.text())
-      .then(fileContent => {
-        numbers = fileContent.split('\n').map(number => number.trim());
-        displayNumbers();
-      })
-      .catch(error => console.error("Error reading file:", error));
   </script>
 </body>
 </html>
