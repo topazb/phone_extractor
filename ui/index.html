@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>חלוקת מדריכים אישיים</title>
-  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/fabicon.ico">
   <style type="text/css">
     @import url(style.css);
   </style>
@@ -33,15 +33,15 @@
     <textarea id="text1" placeholder="הכנס/י את רשימת המספרים של כל הקבוצה כאן" required></textarea>
   </div>
   <div class="text-inputs">
-    <label for="text2">קבוצת וואטסאפ חפירות (מדריכים):</label>
+    <label for="text2">שמות המדריכים:</label>
     <textarea id="text2" placeholder="הכנס/י את רשימת המספרים של קבוצת המדריכים בלבד כאן"></textarea>
   </div>
-  <div>
-    <label>לא יכללו ברשימה:</label>
-    <ul id="numberList"></ul>
-    <input type="text" id="newNumber" placeholder="עוד מספר?">
-    <button onclick="addNumber()">+</button>
-  </div>
+<div id="excludeNumbersSection">
+  <label>להוציא מספרים ספציפים:</label>
+  <ul id="numberList"></ul>
+  <input type="text" id="newNumber" placeholder="הכנס/י מספר להוריד מהרשימה">
+  <button onclick="addNumber()">+</button>
+</div>
     </br>
 
 <div>
@@ -117,31 +117,19 @@ function displayResult(result) {
   const numPhones = result.num_phones;
   const phoneLists = result.phone_lists;
   const list2Length = result.list2_length;
-  const activeInstructorsLength = result.active_instructors_length; // Retrieve the active_instructors_length
 
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();
   const formattedDateTime = currentDateTime.toLocaleString("he-IL");
-
-  const numPhonesMsg = `סה"כ אנשים בקבוצת האתגר: ${numPhones}`;
-  const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
-  const activeInstructorsLengthMsg = `מדריכים פעילים: ${activeInstructorsLength}`; // Create the message for active_instructors_length
-  dateTimeNode.innerHTML = `הנתונים נכונים נכון ל: ${formattedDateTime}`;
+  dateTimeNode.textContent = formattedDateTime;
   resultDiv.appendChild(dateTimeNode);
 
-  const phoneListsMsg = phoneLists.map((list, index) => `*קבוצה ${index + 1}:*<br>${list.join("<br>")}`);
-
-  const numPhonesNode = document.createElement("p");
-  numPhonesNode.innerHTML = numPhonesMsg;
-  resultDiv.appendChild(numPhonesNode);
-
-  const list2LengthNode = document.createElement("p");
-  list2LengthNode.innerHTML = list2LengthMsg;
-  resultDiv.appendChild(list2LengthNode);
-
-  const activeInstructorsLengthNode = document.createElement("p"); // Create a new <p> element for active_instructors_length
-  activeInstructorsLengthNode.innerHTML = activeInstructorsLengthMsg; // Set the message for active_instructors_length
-  resultDiv.appendChild(activeInstructorsLengthNode); // Append the active_instructors_length node
+  const listsTextarea = document.createElement("textarea");
+  listsTextarea.classList.add("ltr-text");
+  listsTextarea.rows = 10; // Set the number of rows as needed
+  const formattedLists = phoneLists.map((list, index) => `*קבוצה ${index + 1}:*\n${list.join("\n")}`).join("\n\n");
+  listsTextarea.value = formattedLists.trim(); // Remove leading/trailing empty lines
+  resultDiv.appendChild(listsTextarea);
 
   const copyButton = document.createElement("button");
   copyButton.classList.add("button", "copy-button");
@@ -149,34 +137,30 @@ function displayResult(result) {
   copyButton.addEventListener("click", copyLists);
   resultDiv.appendChild(copyButton);
 
-  for (const msg of phoneListsMsg) {
-    const listNode = document.createElement("p");
-    listNode.innerHTML = msg;
-    listNode.classList.add("ltr-text");
-    resultDiv.appendChild(listNode);
-  }
+  const numPhonesMsg = `סה"כ מודרכים: ${numPhones}`;
+  const numPhonesNode = document.createElement("p");
+  numPhonesNode.textContent = numPhonesMsg;
+  resultDiv.appendChild(numPhonesNode);
+
+  const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
+  const list2LengthNode = document.createElement("p");
+  list2LengthNode.textContent = list2LengthMsg;
+  resultDiv.appendChild(list2LengthNode);
 }
 
-    function displayError(errorMessage) {
-      const resultDiv = document.getElementById("result");
-      resultDiv.innerHTML = "";
+function copyLists() {
+  const listsTextarea = document.querySelector("#result textarea");
+  listsTextarea.select();
 
-      const errorNode = document.createElement("p");
-      errorNode.textContent = errorMessage;
-      errorNode.classList.add("error");
-      resultDiv.appendChild(errorNode);
-    }
-
-    function copyLists() {
-      const resultDiv = document.getElementById("result");
-      const ltrLists = resultDiv.getElementsByClassName("ltr-text");
-      let copyText = "";
-      for (const list of ltrLists) {
-        copyText += list.innerHTML + "<br>"; // Include new lines
-      }
-      copyText = copyText.replace(/<br>/g, "\n"); // Replace <br> with actual new lines
-      navigator.clipboard.writeText(copyText);
-    }
+  // Copy the content to the clipboard using the Clipboard API
+  navigator.clipboard.writeText(listsTextarea.value)
+    .then(() => {
+      console.log("Content copied to clipboard");
+    })
+    .catch((error) => {
+      console.error("Failed to copy content to clipboard:", error);
+    });
+}
   </script>
 
   <script>
@@ -201,6 +185,10 @@ function displayNumbers() {
 
     numberListElement.appendChild(listItem);
   }
+
+  // Hide the section if the numbers list is empty
+  const excludeNumbersSection = document.getElementById('excludeNumbersSection');
+  excludeNumbersSection.style.display = numbers.length > 0 ? 'block' : 'none';
 }
 
 function addNumber() {
@@ -238,13 +226,6 @@ newNumberInput.addEventListener('keydown', function (event) {
       }
     }
 
-    fetch('exclude_numbers.txt')
-      .then(response => response.text())
-      .then(fileContent => {
-        numbers = fileContent.split('\n').map(number => number.trim());
-        displayNumbers();
-      })
-      .catch(error => console.error("Error reading file:", error));
   </script>
 </body>
 </html>

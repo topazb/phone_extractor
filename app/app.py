@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import re
+from read_from_sheet import extract_phone_numbers_sheet
 
 app = Flask(__name__)
 CORS(app)
@@ -23,12 +24,15 @@ def process_text():
 
         phone_numbers1 = extract_phone_numbers(text1)
         phone_numbers2 = extract_phone_numbers(text2)
+        phone_numbers_instructors = extract_phone_numbers_sheet()
 
         # Format the exclude_numbers
         formatted_exclude_numbers = format_phone_numbers(exclude_numbers)
+        formatted_exclude_numbers_instructors = format_phone_numbers(phone_numbers_instructors)
 
-        # Subtract the formatted_exclude_numbers from phone_numbers1
-        phone_numbers1 = subtract_phone_numbers(phone_numbers1, formatted_exclude_numbers)
+        # Subtract the formatted_exclude_numbers_instructors from phone_numbers1
+        phone_numbers1 = subtract_phone_numbers(phone_numbers1, formatted_exclude_numbers + formatted_exclude_numbers_instructors)
+
 
         # Subtract the phone numbers in text 2 from formatted_exclude_numbers
         active_instructors = subtract_phone_numbers(phone_numbers2, formatted_exclude_numbers)
@@ -110,7 +114,7 @@ def format_phone_numbers(phone_numbers):
         formatted_number = formatted_number[:7] + '-' + formatted_number[7:10] + '-' + formatted_number[10:]
 
         formatted_numbers.append(formatted_number)
-        print(formatted_number)
+       #print(formatted_number)
 
     return formatted_numbers
 
