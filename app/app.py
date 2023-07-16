@@ -110,7 +110,7 @@ def format_phone_numbers(phone_numbers):
         formatted_number = formatted_number[:7] + '-' + formatted_number[7:10] + '-' + formatted_number[10:]
 
         formatted_numbers.append(formatted_number)
-        print(formatted_number)
+       #print(formatted_number)
 
     return formatted_numbers
 
