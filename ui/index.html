@@ -117,6 +117,7 @@ function displayResult(result) {
   const numPhones = result.num_phones;
   const phoneLists = result.phone_lists;
   const list2Length = result.list2_length;
+  const list2 = result.text2_items
 
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();
@@ -127,7 +128,7 @@ function displayResult(result) {
   const listsTextarea = document.createElement("textarea");
   listsTextarea.classList.add("ltr-text");
   listsTextarea.rows = 10; // Set the number of rows as needed
-  const formattedLists = phoneLists.map((list, index) => `*קבוצה ${index + 1}:*\n${list.join("\n")}`).join("\n\n");
+  const formattedLists = phoneLists.map((list, index) => `*${list2[index]}:*\n${list.join("\n")}`).join("\n\n");
   listsTextarea.value = formattedLists.trim(); // Remove leading/trailing empty lines
   resultDiv.appendChild(listsTextarea);
 
