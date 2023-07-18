@@ -116,6 +116,11 @@ input[type="number"] {
   border-radius: 5px;
 }
 
+.copy-button-container {
+  margin-top: 10px;
+}
+
+
 .info-button {
   display: block;
   width: fit-content;

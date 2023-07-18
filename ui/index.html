@@ -117,7 +117,7 @@ function displayResult(result) {
   const numPhones = result.num_phones;
   const phoneLists = result.phone_lists;
   const list2Length = result.list2_length;
-  const list2 = result.text2_items
+  const list2 = result.text2_items;
 
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();
@@ -132,11 +132,15 @@ function displayResult(result) {
   listsTextarea.value = formattedLists.trim(); // Remove leading/trailing empty lines
   resultDiv.appendChild(listsTextarea);
 
+  const copyButtonContainer = document.createElement("div");
+  copyButtonContainer.classList.add("copy-button-container");
+  resultDiv.appendChild(copyButtonContainer);
+
   const copyButton = document.createElement("button");
   copyButton.classList.add("button", "copy-button");
   copyButton.textContent = "העתק";
   copyButton.addEventListener("click", copyLists);
-  resultDiv.appendChild(copyButton);
+  copyButtonContainer.appendChild(copyButton);
 
   const numPhonesMsg = `סה"כ מודרכים: ${numPhones}`;
   const numPhonesNode = document.createElement("p");
@@ -147,6 +151,8 @@ function displayResult(result) {
   const list2LengthNode = document.createElement("p");
   list2LengthNode.textContent = list2LengthMsg;
   resultDiv.appendChild(list2LengthNode);
+
+
 }
 
 function copyLists() {
