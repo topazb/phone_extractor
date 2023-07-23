@@ -133,6 +133,7 @@ input[type="number"] {
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
+  border : none;
 }
 .info-button:hover {
   background-color: #F25F3C; /* Change the background color to orange when hovered */

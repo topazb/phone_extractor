@@ -36,7 +36,13 @@
     <label for="text2">שמות המדריכים:</label>
     <textarea id="text2" placeholder="הכנס/י את רשימת המספרים של קבוצת המדריכים בלבד כאן"></textarea>
   </div>
-<div id="excludeNumbersSection">
+
+  <!-- Button to open the advanced options -->
+<button class="info-button" onclick="toggleDivVisibility()">מתקדם</button>
+<!-- Hidden div that should open when the button is clicked -->
+<div id="hiddenDiv" style="display: none;">
+  <div id="excludeNumbersSection">
+    </br>
   <label>להוציא מספרים ספציפים:</label>
   <ul id="numberList"></ul>
   <input type="text" id="newNumber" placeholder="הכנס/י מספר להוריד מהרשימה">
@@ -44,7 +50,6 @@
 </div>
     </br>
 
-<div>
   <label for="numLists">לכמה קבוצות לחלק?</label>
   <input type="number" id="numLists" value="0" min="0">
 </div>
@@ -232,7 +237,16 @@ newNumberInput.addEventListener('keydown', function (event) {
         displayNumbers();
       }
     }
+function toggleDivVisibility() {
+  var div = document.getElementById('hiddenDiv');
+  if (div.style.display === 'none') {
+    div.style.display = 'block';
+  } else {
+    div.style.display = 'none';
+  }
+}
 
   </script>
+
 </body>
 </html>
