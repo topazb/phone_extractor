@@ -191,3 +191,14 @@ textarea[placeholder="הכנס/י את הטקסט הנוסף"] {
   font-family: 'MyFont', Arial, sans-serif;
 }
 
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    /* Replace the URL with the actual path to your loading animation GIF or use CSS animation */
+    .loading-img {
+      display: block;
+      margin: 0 auto;
+    }

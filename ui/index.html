@@ -57,7 +57,15 @@
   <div>
     <button class="button" onclick="processText()">חלק לקבוצות!</button>
   </div>
-  <div id="result"></div>
+
+  <!-- Loading animation -->
+<div class="loading" id="loadingDiv">
+  <img class="loading-img" src="img/loading-66.gif" alt="Loading...">
+</div>
+
+<!-- Result div -->
+<div id="result"></div>
+
 
   <script>
     function showInfoPopup() {
@@ -77,17 +85,26 @@
 
 
   <script>
-    function toggleNumberInput() {
-      const arrow = document.querySelector('.arrow');
-      const numListsContent = document.getElementById('numListsContent');
+function displayLoadingAnimation() {
+  document.getElementById("loadingDiv").style.display = "block";
+  document.getElementById("result").style.display = "none";
+}
 
-      arrow.classList.toggle('collapsed');
-      numListsContent.classList.toggle('show');
-    }
+function hideLoadingAnimation() {
+  document.getElementById("loadingDiv").style.display = "none";
+  document.getElementById("result").style.display = "block";
+}
+
 
 function processText() {
+  // Show loading animation
+  displayLoadingAnimation();
+
   const text1 = document.getElementById("text1").value;
   if (!text1) {
+     // Hide loading animation
+    hideLoadingAnimation();
+
     alert("אנא הזן את קבוצת הוואטסאפ המלאה");
     return;
   }
@@ -111,9 +128,18 @@ function processText() {
     }
     return response.json();
   })
-  .then(result => displayResult(result))
-  .catch(error => displayError(error.message));
+  .then(result => {
+    // Hide loading animation
+    hideLoadingAnimation();
+    displayResult(result);
+  })
+  .catch(error => {
+    // Hide loading animation
+    hideLoadingAnimation();
+    displayError(error.message);
+  });
 }
+
 
 function displayResult(result) {
   const resultDiv = document.getElementById("result");
