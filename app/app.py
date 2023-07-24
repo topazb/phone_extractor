@@ -45,7 +45,9 @@ def process_text():
         response_data = {
             'num_phones': len(phone_numbers1),
             'phone_lists': divided_lists,
-            'text2_items': instructors_names
+            'text2_items': instructors_names,
+            'list2_length': len(instructors_names)
+
         }
         # Return the response
         return jsonify(response_data)
