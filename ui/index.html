@@ -153,7 +153,10 @@ function displayResult(result) {
   const listsTextarea = document.createElement("textarea");
   listsTextarea.classList.add("ltr-text");
   listsTextarea.rows = 10; // Set the number of rows as needed
-  const formattedLists = phoneLists.map((list, index) => `*${list2[index]}:*\n${list.join("\n")}`).join("\n\n");
+  // If list2 is empty or undefined, create default group names: "group 1", "group 2", ...
+  const groupNames = list2 && list2.length > 0 ? list2 : Array.from({ length: list2Length }, (_, i) => `group ${i + 1}`);
+  const formattedLists = phoneLists.map((list, index) => `*${groupNames[index] || `group ${index + 1}`}:*\n${list.join("\n")}`).join("\n\n");
+
   listsTextarea.value = formattedLists.trim(); // Remove leading/trailing empty lines
   resultDiv.appendChild(listsTextarea);
 
