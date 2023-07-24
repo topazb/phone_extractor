@@ -150,12 +150,6 @@ function displayResult(result) {
   const list2Length = result.list2_length;
   const list2 = result.text2_items;
 
-  const dateTimeNode = document.createElement("p");
-  const currentDateTime = new Date();
-  const formattedDateTime = currentDateTime.toLocaleString("he-IL");
-  dateTimeNode.textContent = formattedDateTime;
-  resultDiv.appendChild(dateTimeNode);
-
   const listsTextarea = document.createElement("textarea");
   listsTextarea.classList.add("ltr-text");
   listsTextarea.rows = 10; // Set the number of rows as needed
@@ -183,7 +177,11 @@ function displayResult(result) {
   list2LengthNode.textContent = list2LengthMsg;
   resultDiv.appendChild(list2LengthNode);
 
-
+  const dateTimeNode = document.createElement("p");
+  const currentDateTime = new Date();
+  const formattedDateTime = currentDateTime.toLocaleString("he-IL");
+  dateTimeNode.textContent = formattedDateTime;
+  resultDiv.appendChild(dateTimeNode);
 }
 
 function copyLists() {
