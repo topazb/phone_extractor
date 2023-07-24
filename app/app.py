@@ -1,3 +1,4 @@
+import logging
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import re
@@ -5,6 +6,9 @@ from read_from_sheet import extract_phone_numbers_sheet
 
 app = Flask(__name__)
 CORS(app)
+
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 @app.route('/process_text', methods=['POST', 'OPTIONS'])
 def process_text():
@@ -21,6 +25,8 @@ def process_text():
         text2 = request.json['text2']
         num_lists = request.json['num_lists']
         exclude_numbers = request.json['exclude_numbers']
+
+        logging.info("Received a request to process text.")
 
         phone_numbers1 = extract_phone_numbers(text1)
         phone_numbers_instructors = extract_phone_numbers_sheet()
@@ -47,13 +53,15 @@ def process_text():
             'phone_lists': divided_lists,
             'text2_items': instructors_names,
             'list2_length': len(instructors_names)
-
         }
+
+        logging.info("Processed the request successfully.")
         # Return the response
         return jsonify(response_data)
 
     except Exception as e:
         error_message = f"Error processing text: {str(e)}"
+        logging.error(error_message)
         return jsonify({'error': error_message}), 500
 
 
