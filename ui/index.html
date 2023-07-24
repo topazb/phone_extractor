@@ -34,7 +34,7 @@
   </div>
   <div class="text-inputs">
     <label for="text2">שמות המדריכים:</label>
-    <textarea id="text2" placeholder="הכנס/י את רשימת המספרים של קבוצת המדריכים בלבד כאן"></textarea>
+    <textarea id="text2" placeholder="הכנס/י את שמות המדריכים כאן"></textarea>
   </div>
 
   <!-- Button to open the advanced options -->
@@ -45,7 +45,7 @@
     </br>
   <label>להוציא מספרים ספציפים:</label>
   <ul id="numberList"></ul>
-  <input type="text" id="newNumber" placeholder="הכנס/י מספר להוריד מהרשימה">
+  <input type="text" id="newNumber" placeholder="הכנס/י מספר להוציא מהרשימה">
   <button onclick="addNumber()">+</button>
 </div>
     </br>
@@ -236,7 +236,7 @@ function addNumber() {
   // Check if the input is a valid 10-digit number
   const numberRegex = /^\d{10}$/;
   if (!numberRegex.test(newNumber)) {
-    alert('Invalid number. Please enter a 10-digit number.');
+    alert('מספר לא תקין. אנא הכנס/י מספר בעל 10 ספרות.');
     return;
   }
 
