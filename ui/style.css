@@ -153,9 +153,8 @@ input[type="number"] {
   font-size: 16px;
   width: 50%;
   max-width: 600px;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 20%; /* Move the popup a bit up from the center */
+  right: 50%; /* Move the popup a bit to the right from the center */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 5px 10px;
 }
@@ -169,7 +168,7 @@ input[type="number"] {
   display: block;
   width: fit-content;
   margin-top: 10px;
-  background-color: lightblue;
+  background-color: #8D479A;
   color: white;
   font-weight: bold;
   font-size: 14px;
@@ -177,11 +176,17 @@ input[type="number"] {
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
-  background-color: #CBC3E3;
+  background-color: #8D479A;
+}
+
+/* Add the hover style for the close-button */
+.info-popup .close-button:hover {
+  background-color: #F25F3C; /* Change the background color to orange when hovered */
 }
 
 .info-button:hover + .info-popup {
   display: block;
+  /*transform: none; /* Add this line to disable the transform effect */
 }
 
 /* Add a CSS rule for Hebrew text areas to override the general style */
@@ -202,3 +207,31 @@ textarea[placeholder="הכנס/י את הטקסט הנוסף"] {
       display: block;
       margin: 0 auto;
     }
+
+.content-box {
+    background-color: #f9f9f9; /* Set the background color of the box */
+    border: 1px solid #ccc; /* Add a border around the box */
+    padding: 20px; /* Add padding to create some space around the content */
+    margin: 20px auto; /* Center the box horizontally and create some space from the top */
+    max-width: 800px; /* Set the maximum width of the box */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow */
+}
+
+        body {
+            font-family: "Arial Hebrew", Arial, sans-serif;
+            font-size: 20px; /* Increase the font size for the body text */
+            /* ... Add the rest of your existing styles for body ... */
+        }
+
+        h1 {
+            font-size: 30px; /* Increase the font size for the heading */
+            margin-bottom: 20px; /* Increase the margin below the heading */
+        }
+
+        label {
+            font-size: 24px; /* Increase the font size for labels */
+        }
+
+        textarea {
+            font-size: 18px; /* Increase the font size for textareas */
+        }
