@@ -42,7 +42,7 @@ function processText() {
 
   const data = { text1, text2, num_lists: parseInt(numLists), exclude_numbers: excludeNumbers };
 
-  fetch("https://p01--phone-extractor--rzfktjl4by88.code.run//process_text", {
+  fetch("http://127.0.0.1:5000//process_text", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -76,6 +76,8 @@ function displayResult(result) {
   const phoneLists = result.phone_lists;
   const list2Length = result.list2_length;
   const list2 = result.text2_items;
+  const countSubtracted = result.count_subtracted; // New addition: Count Subtracted
+
 
   const listsTextarea = document.createElement("textarea");
   listsTextarea.classList.add("ltr-text");
@@ -106,6 +108,12 @@ function displayResult(result) {
   const list2LengthNode = document.createElement("p");
   list2LengthNode.textContent = list2LengthMsg;
   resultDiv.appendChild(list2LengthNode);
+
+  //Display the Count Subtracted information
+  const countSubtractedMsg = `מספר הטלפונים שהוצאו: ${countSubtracted}`;
+  const countSubtractedNode = document.createElement("p");
+  countSubtractedNode.textContent = countSubtractedMsg;
+  resultDiv.appendChild(countSubtractedNode);
 
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();

@@ -36,8 +36,10 @@ def process_text():
         formatted_exclude_numbers_instructors = format_phone_numbers(phone_numbers_instructors)
 
         # Subtract the formatted_exclude_numbers_instructors from phone_numbers1
-        phone_numbers1 = subtract_phone_numbers(phone_numbers1, formatted_exclude_numbers + formatted_exclude_numbers_instructors)
+        subtracted_numbers, count_subtracted = subtract_phone_numbers(phone_numbers1, formatted_exclude_numbers + formatted_exclude_numbers_instructors)
         instructors_names = extract_text2_items(text2)  # Extract items from text2
+
+
 
         if num_lists > 0:
             divided_lists = divide_phone_numbers(phone_numbers1, num_lists)  # Divide into num_lists lists
@@ -52,7 +54,9 @@ def process_text():
             'num_phones': len(phone_numbers1),
             'phone_lists': divided_lists,
             'text2_items': instructors_names,
-            'list2_length': len(instructors_names)
+            'list2_length': len(instructors_names),
+            'count_subtracted': count_subtracted  # Include the count of subtracted numbers in the response
+
         }
 
         logging.info("Processed the request successfully.")
@@ -77,10 +81,16 @@ def extract_phone_numbers(text):
     return phone_numbers
 
 def subtract_phone_numbers(phone_numbers1, phone_numbers2):
-    # Subtract phone numbers in phone_numbers2 from phone_numbers1
-    subtracted_numbers = list(set(phone_numbers1) - set(phone_numbers2))
+    # Convert the phone_numbers2 list to a set for faster lookup
+    phone_numbers2_set = set(phone_numbers2)
 
-    return subtracted_numbers
+    # Use list comprehension to filter out numbers present in phone_numbers2
+    subtracted_numbers = [number for number in phone_numbers1 if number not in phone_numbers2_set]
+
+    # Calculate the count of subtracted numbers
+    count_subtracted = len(phone_numbers1) - len(subtracted_numbers)
+
+    return subtracted_numbers, count_subtracted
 
 def divide_phone_numbers(phone_numbers, num_lists):
     # Calculate the number of phone numbers per list
