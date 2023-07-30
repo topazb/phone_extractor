@@ -42,7 +42,7 @@ function processText() {
 
   const data = { text1, text2, num_lists: parseInt(numLists), exclude_numbers: excludeNumbers };
 
-  fetch("http://10.124.43.81:5000/process_text", {
+  fetch("https://p01--phone-extractor--rzfktjl4by88.code.run/process_text", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
