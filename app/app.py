@@ -42,17 +42,18 @@ def process_text():
 
 
         if num_lists > 0:
-            divided_lists = divide_phone_numbers(phone_numbers1, num_lists)  # Divide into num_lists lists
+            divided_lists = divide_phone_numbers(subtracted_numbers, num_lists)  # Divide into num_lists lists
         elif len(instructors_names) > 0:
-            divided_lists = divide_phone_numbers(phone_numbers1, len(instructors_names))  # Divide into instructors_names lists
+            divided_lists = divide_phone_numbers(subtracted_numbers, len(instructors_names))  # Divide into instructors_names lists
         else:
             num_lists = max(1, num_lists)  # Set num_lists to at least 1
-            divided_lists = divide_phone_numbers(phone_numbers1, num_lists)  # Divide into num_lists lists
+            divided_lists = divide_phone_numbers(subtracted_numbers, num_lists)  # Divide into num_lists lists
 
         # Prepare the response
         response_data = {
             'num_phones': len(phone_numbers1),
             'phone_lists': divided_lists,
+            'count_attendees': len(subtracted_numbers),
             'text2_items': instructors_names,
             'list2_length': len(instructors_names),
             'count_subtracted': count_subtracted  # Include the count of subtracted numbers in the response
@@ -111,7 +112,6 @@ def divide_phone_numbers(phone_numbers, num_lists):
         divided_lists.append(sublist)
 
         start += sublist_size
-
     return divided_lists
 
 def format_phone_numbers(phone_numbers):

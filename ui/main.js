@@ -42,7 +42,7 @@ function processText() {
 
   const data = { text1, text2, num_lists: parseInt(numLists), exclude_numbers: excludeNumbers };
 
-  fetch("http://127.0.0.1:5000//process_text", {
+  fetch("https://p01--phone-extractor--rzfktjl4by88.code.run//process_text", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -76,7 +76,8 @@ function displayResult(result) {
   const phoneLists = result.phone_lists;
   const list2Length = result.list2_length;
   const list2 = result.text2_items;
-  const countSubtracted = result.count_subtracted; // New addition: Count Subtracted
+  const countSubtracted = result.count_subtracted; // Count Subtracted
+  const countAttendees = result.count_attendees; // Corrected: Count of Attendees
 
 
   const listsTextarea = document.createElement("textarea");
@@ -99,10 +100,16 @@ function displayResult(result) {
   copyButton.addEventListener("click", copyLists);
   copyButtonContainer.appendChild(copyButton);
 
-  const numPhonesMsg = `סה"כ מודרכים: ${numPhones}`;
+  const numPhonesMsg = `סה"כ בקבוצה: ${numPhones}`;
   const numPhonesNode = document.createElement("p");
   numPhonesNode.textContent = numPhonesMsg;
   resultDiv.appendChild(numPhonesNode);
+
+  const countAttendeesMsg = `מספר מודרכים: ${countAttendees}`; // Display count of attendees
+  const countAttendeesNode = document.createElement("p");
+  countAttendeesNode.textContent = countAttendeesMsg;
+  resultDiv.appendChild(countAttendeesNode);
+
 
   const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
   const list2LengthNode = document.createElement("p");
