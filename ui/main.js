@@ -105,7 +105,7 @@ function displayResult(result) {
   numPhonesNode.textContent = numPhonesMsg;
   resultDiv.appendChild(numPhonesNode);
 
-  const countAttendeesMsg = `מספר מודרכים: ${countAttendees}`; // Display count of attendees
+  const countAttendeesMsg = `סה״כ מודרכים: ${countAttendees}`; // Display count of attendees
   const countAttendeesNode = document.createElement("p");
   countAttendeesNode.textContent = countAttendeesMsg;
   resultDiv.appendChild(countAttendeesNode);
@@ -115,12 +115,6 @@ function displayResult(result) {
   const list2LengthNode = document.createElement("p");
   list2LengthNode.textContent = list2LengthMsg;
   resultDiv.appendChild(list2LengthNode);
-
-  //Display the Count Subtracted information
-  const countSubtractedMsg = `מספר הטלפונים שהוצאו: ${countSubtracted}`;
-  const countSubtractedNode = document.createElement("p");
-  countSubtractedNode.textContent = countSubtractedMsg;
-  resultDiv.appendChild(countSubtractedNode);
 
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();

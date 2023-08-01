@@ -39,7 +39,8 @@ def process_text():
         subtracted_numbers, count_subtracted = subtract_phone_numbers(phone_numbers1, formatted_exclude_numbers + formatted_exclude_numbers_instructors)
         instructors_names = extract_text2_items(text2)  # Extract items from text2
 
-
+        # Count the whole Whatsapp group
+        total_count = count_unique_phone_numbers_and_names(text1)
 
         if num_lists > 0:
             divided_lists = divide_phone_numbers(subtracted_numbers, num_lists)  # Divide into num_lists lists
@@ -51,7 +52,7 @@ def process_text():
 
         # Prepare the response
         response_data = {
-            'num_phones': len(phone_numbers1),
+            'num_phones': total_count+1,
             'phone_lists': divided_lists,
             'count_attendees': len(subtracted_numbers),
             'text2_items': instructors_names,
@@ -68,6 +69,20 @@ def process_text():
         error_message = f"Error processing text: {str(e)}"
         logging.error(error_message)
         return jsonify({'error': error_message}), 500
+
+
+def count_unique_phone_numbers_and_names(input_text):
+    # Use regular expressions to find all phone numbers and names
+    phone_numbers = re.findall(r'(\+\d+[\d\s()-]+)', input_text)
+    names = re.findall(r'[\u0590-\u05FF]+', input_text)
+
+    # Remove duplicates from the phone numbers and names lists
+    unique_phone_numbers = list(set(phone_numbers))
+    unique_names = list(set(names))
+
+    # Return the total count of unique phone numbers and names
+    total_count = len(unique_phone_numbers) + len(unique_names)
+    return total_count
 
 
 def extract_phone_numbers(text):
