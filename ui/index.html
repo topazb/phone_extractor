@@ -7,72 +7,72 @@
     <style type="text/css">
     @import url(style.css);
 
-
     </style>
 
     <link href="https://fonts.googleapis.com/css?family=Arimo&display=swap" rel="stylesheet">
     <!-- Add Hebrew font link -->
 </head>
 <body>
-<div class="content-box">
-<div class="logo">
-    <img src="img/logo.png" alt="Logo">
-    <br>
-    <h1>חלוקת מדריכים אישיים</h1>
-</div>
-<div>
-    <div class="info-button" onclick="showInfoPopup()">איך זה עובד?</div> <!-- Update button text here -->
-    <div class="info-popup" id="infoPopup"> <!-- Add the info popup -->
-        <p>1. הכנס/י ל- <a href="https://web.whatsapp.com/" target="_blank">https://web.whatsapp.com</a> (אם יש צורך,
-            סרוק/י את הברקוד דרך הסמארטפון) </p> <!-- Make the URL clickable -->
-        <p>2. פתח/י את הקבוצה של האתגר</p>
-        <p>3. מתחת לשם הקבוצה לחץ/י קליק ימני ו״בדיקה״ או Inspect</p>
-        <p>4. בחלון שנפתח בצד לחץ/י בחלק הכחול קליק ימני ״העתק״ או Copy -> Copy OuterHTML </p>
-        <p>5. הדבק/י בתיבה הראשונה</p>
-        <div class="close-button" onclick="hideInfoPopup()">הבנתי :)</div>
+<div class="box">
+    <div class="logo">
+        <img src="img/logo.png" alt="Logo">
     </div>
-</div>
-</br>
-<div>
-    <label for="text1">קבוצת וואטסאפ מלאה:</label>
-    <textarea id="text1" placeholder="הכנס/י את רשימת המספרים של כל הקבוצה כאן" required></textarea>
-</div>
-<div class="text-inputs">
-    <label for="text2">שמות המדריכים:</label>
-    <textarea id="text2" placeholder="הכנס/י את שמות המדריכים כאן"></textarea>
-</div>
+    <h1>חלוקת מדריכים אישיים</h1>
 
-<!-- Button to open the advanced options -->
-<button class="info-button" onclick="toggleDivVisibility()">מתקדם</button>
-<!-- Hidden div that should open when the button is clicked -->
-<div id="hiddenDiv" style="display: none;">
-    <div id="excludeNumbersSection">
-        </br>
-        <label>להוציא מספרים ספציפים:</label>
-        <ul id="numberList"></ul>
-        <input type="text" id="newNumber" placeholder="הכנס/י מספר להוציא מהרשימה">
-        <button onclick="addNumber()">+</button>
+    <div>
+        <div class="info-button" onclick="showInfoPopup()">איך זה עובד?</div> <!-- Update button text here -->
+        <div class="info-popup" id="infoPopup"> <!-- Add the info popup -->
+            <p>1. הכנס/י ל- <a href="https://web.whatsapp.com/" target="_blank">https://web.whatsapp.com</a> (אם יש
+                צורך,
+                סרוק/י את הברקוד דרך הסמארטפון) </p> <!-- Make the URL clickable -->
+            <p>2. פתח/י את הקבוצה של האתגר</p>
+            <p>3. מתחת לשם הקבוצה לחץ/י קליק ימני ו״בדיקה״ או Inspect</p>
+            <p>4. בחלון שנפתח בצד לחץ/י בחלק הכחול קליק ימני ״העתק״ או Copy -> Copy OuterHTML </p>
+            <p>5. הדבק/י בתיבה הראשונה</p>
+            <div class="close-button" onclick="hideInfoPopup()">הבנתי :)</div>
+        </div>
     </div>
     </br>
+    <div>
+        <label for="text1">קבוצת וואטסאפ מלאה:</label>
+        <textarea id="text1" placeholder="הכנס/י את רשימת המספרים של כל הקבוצה כאן" required></textarea>
+    </div>
+    <div class="text-inputs">
+        <label for="text2">שמות המדריכים:</label>
+        <textarea id="text2" placeholder="הכנס/י את שמות המדריכים כאן"></textarea>
+    </div>
 
-    <label for="numLists">לכמה קבוצות לחלק?</label>
-    <input type="number" id="numLists" value="0" min="0">
-</div>
+    <!-- Button to open the advanced options -->
+    <button class="info-button" onclick="toggleDivVisibility()">מתקדם</button>
+    <!-- Hidden div that should open when the button is clicked -->
+    <div id="hiddenDiv" style="display: none;">
+        <div id="excludeNumbersSection">
+            </br>
+            <label>להוציא מספרים ספציפים:</label>
+            <ul id="numberList"></ul>
+            <input type="text" id="newNumber" placeholder="הכנס/י מספר להוציא מהרשימה">
+            <button onclick="addNumber()">+</button>
+        </div>
+        </br>
 
-<div>
-    <button class="button" onclick="processText()">חלק לקבוצות!</button>
-</div>
+        <label for="numLists">לכמה קבוצות לחלק?</label>
+        <input type="number" id="numLists" value="0" min="0">
+    </div>
 
-<!-- Loading animation -->
-<div class="loading" id="loadingDiv">
-    <img class="loading-img" src="img/loading-66.gif" alt="Loading...">
-</div>
+    <div>
+        <button class="button" onclick="processText()">חלק לקבוצות!</button>
+    </div>
 
-<!-- Result div -->
-<div id="result"></div>
+    <!-- Loading animation -->
+    <div class="loading" id="loadingDiv">
+        <img class="loading-img" src="img/loading-66.gif" alt="Loading...">
+    </div>
 
-<!-- Include the main.js file -->
-<script src="main.js"></script>
+    <!-- Result div -->
+    <div id="result"></div>
+
+    <!-- Include the main.js file -->
+    <script src="main.js"></script>
 </div>
 </body>
 </html>

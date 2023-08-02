@@ -1,31 +1,44 @@
 /* Add the Hebrew font and additional styles */
-body {
-  font-family: "Arial Hebrew", Arial, sans-serif;
-  margin: 20px;
-  direction: rtl;
-}
+        body {
+            font-family: "Arial Hebrew", Arial, sans-serif;
+            margin: 20px;
+            direction: rtl;
+        }
 
-h1 {
-  margin-bottom: 10px;
-}
+        .box {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+        }
 
-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
-  color: #8D479A; /* Add desired color */
-  font-size: 18px; /* Add desired font size */
-}
+        h1 {
+            margin-bottom: 10px;
+            text-align:center;
+        }
 
-textarea {
-  width: 300px; /* Adjust the width as needed */
-  height: 80px; /* Adjust the height as needed */
-  resize: vertical;
-}
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+            color: #8D479A; /* Add desired color */
+            font-size: 18px; /* Add desired font size */
+        }
 
-input[type="number"] {
-  width: 30px; /* Adjust the width as needed */
-}
+        textarea {
+            width: 200px; /* Adjust the width as needed */
+            height: 80px; /* Adjust the height as needed */
+            resize: vertical;
+        }
+
+        textarea, select, input[type="text"] {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+
 
 .button {
   margin-top: 10px;
@@ -52,11 +65,6 @@ input[type="number"] {
   color: red;
 }
 
-.collapsible {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
 
 .arrow {
   width: 10px;
@@ -73,30 +81,11 @@ input[type="number"] {
   transform: rotate(-135deg);
 }
 
-.collapsible-content {
-  display: none;
-  margin-top: 10px;
-}
-
-.collapsible-content.show {
-  display: block;
-}
-
-.text-inputs {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-.text-inputs textarea {
-  margin-bottom: 10px;
-  border-radius: 5px;
-}
-
 .logo {
   display: flex;
   align-items: center;
   margin-bottom: 20px;
+  justify-content: center;
 }
 
 .logo img {
@@ -154,7 +143,7 @@ input[type="number"] {
   width: 50%;
   max-width: 600px;
   top: 20%; /* Move the popup a bit up from the center */
-  right: 50%; /* Move the popup a bit to the right from the center */
+  right: 63%; /* Move the popup a bit to the right from the center */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
   padding: 5px 10px;
 }
@@ -189,13 +178,6 @@ input[type="number"] {
   /*transform: none; /* Add this line to disable the transform effect */
 }
 
-/* Add a CSS rule for Hebrew text areas to override the general style */
-textarea[placeholder="הכנס/י את הטקסט הנוסף"] {
-  direction: rtl;
-  text-align: right;
-  font-family: 'MyFont', Arial, sans-serif;
-}
-
     .loading {
       display: none;
       text-align: center;
@@ -208,30 +190,3 @@ textarea[placeholder="הכנס/י את הטקסט הנוסף"] {
       margin: 0 auto;
     }
 
-.content-box {
-    background-color: #f9f9f9; /* Set the background color of the box */
-    border: 1px solid #ccc; /* Add a border around the box */
-    padding: 20px; /* Add padding to create some space around the content */
-    margin: 20px auto; /* Center the box horizontally and create some space from the top */
-    max-width: 800px; /* Set the maximum width of the box */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Add a subtle box shadow */
-}
-
-        body {
-            font-family: "Arial Hebrew", Arial, sans-serif;
-            font-size: 20px; /* Increase the font size for the body text */
-            /* ... Add the rest of your existing styles for body ... */
-        }
-
-        h1 {
-            font-size: 30px; /* Increase the font size for the heading */
-            margin-bottom: 20px; /* Increase the margin below the heading */
-        }
-
-        label {
-            font-size: 24px; /* Increase the font size for labels */
-        }
-
-        textarea {
-            font-size: 18px; /* Increase the font size for textareas */
-        }
