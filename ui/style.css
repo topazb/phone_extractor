@@ -190,3 +190,14 @@
       margin: 0 auto;
     }
 
+#excludeNumbersSection div {
+  display: inline-flex; /* or use 'inline-block' */
+  align-items: center; /* Optional: Align items vertically */
+}
+
+#newNumber {
+  /* Optional: Add margin or padding between the input and button */
+  margin-right: 5px;
+}
+
+

@@ -159,9 +159,9 @@ function displayNumbers() {
     numberListElement.appendChild(listItem);
   }
 
-  // Hide the section if the numbers list is empty
+  // Update the section visibility based on the list length
   const excludeNumbersSection = document.getElementById('excludeNumbersSection');
-  excludeNumbersSection.style.display = numbers.length > 0 ? 'block' : 'none';
+  excludeNumbersSection.style.display = 'block';
 }
 
 function addNumber() {
