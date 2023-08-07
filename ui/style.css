@@ -171,7 +171,7 @@
 }
 
 .info-button.clicked {
-  background-color: red;
+  background-color: #F25F3C;
 }
 
 .info-popup {
@@ -183,7 +183,7 @@
   z-index: 1;
   font-size: 16px;
   width: 50%;
-  max-width: 600px;
+  max-width: 630px;
   top: 20%; /* Move the popup a bit up from the center */
   right: 63%; /* Move the popup a bit to the right from the center */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
