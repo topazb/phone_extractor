@@ -132,13 +132,17 @@ def divide_phone_numbers(phone_numbers, num_lists):
 def format_phone_numbers(phone_numbers):
     formatted_numbers = []
     for number in phone_numbers:
-        # Remove the leading '0' and add '+972' as prefix
-        formatted_number = '+972 ' + number[1:]
+        # Check if the number is already in the desired format
+        if number.startswith('+972') and '-' in number:
+            formatted_numbers.append(number)
+        else:
+            # Remove the leading '0' and add '+972' as prefix
+            formatted_number = '+972 ' + number[1:]
 
-        # Add '-' after 2 digits and another '-' after 3 more digits
-        formatted_number = formatted_number[:7] + '-' + formatted_number[7:10] + '-' + formatted_number[10:]
+            # Add '-' after 2 digits and another '-' after 3 more digits
+            formatted_number = formatted_number[:7] + '-' + formatted_number[7:10] + '-' + formatted_number[10:]
 
-        formatted_numbers.append(formatted_number)
+            formatted_numbers.append(formatted_number)
 
     return formatted_numbers
 
