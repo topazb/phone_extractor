@@ -69,8 +69,11 @@ function processText() {
 
 
 function displayResult(result) {
-  const resultDiv = document.getElementById("result");
-  resultDiv.innerHTML = "";
+  const textareaDiv = document.getElementById("textareaDiv");
+  textareaDiv.innerHTML = ""; // Clear the textareaDiv
+
+  const outputDiv = document.getElementById("outputDiv");
+  outputDiv.innerHTML = ""; // Clear the outputDiv
 
   const numPhones = result.num_phones;
   const phoneLists = result.phone_lists;
@@ -79,20 +82,20 @@ function displayResult(result) {
   const countSubtracted = result.count_subtracted; // Count Subtracted
   const countAttendees = result.count_attendees; // Corrected: Count of Attendees
 
-
   const listsTextarea = document.createElement("textarea");
   listsTextarea.classList.add("ltr-text");
-  listsTextarea.rows = 10; // Set the number of rows as needed
+  listsTextarea.style.height = "150px"; // Adjust the height as needed (e.g., set it to "150px")
   // If list2 is empty or undefined, create default group names: "group 1", "group 2", ...
   const groupNames = list2 && list2.length > 0 ? list2 : Array.from({ length: list2Length }, (_, i) => `group ${i + 1}`);
   const formattedLists = phoneLists.map((list, index) => `*${groupNames[index] || `group ${index + 1}`}:*\n${list.join("\n")}`).join("\n\n");
 
   listsTextarea.value = formattedLists.trim(); // Remove leading/trailing empty lines
-  resultDiv.appendChild(listsTextarea);
+  textareaDiv.appendChild(listsTextarea);
 
+  // Create the copy button inside the textareaDiv
   const copyButtonContainer = document.createElement("div");
   copyButtonContainer.classList.add("copy-button-container");
-  resultDiv.appendChild(copyButtonContainer);
+  textareaDiv.appendChild(copyButtonContainer);
 
   const copyButton = document.createElement("button");
   copyButton.classList.add("button", "copy-button");
@@ -103,25 +106,25 @@ function displayResult(result) {
   const numPhonesMsg = `סה"כ בקבוצה: ${numPhones}`;
   const numPhonesNode = document.createElement("p");
   numPhonesNode.textContent = numPhonesMsg;
-  resultDiv.appendChild(numPhonesNode);
+  outputDiv.appendChild(numPhonesNode);
 
   const countAttendeesMsg = `סה״כ מודרכים: ${countAttendees}`; // Display count of attendees
   const countAttendeesNode = document.createElement("p");
   countAttendeesNode.textContent = countAttendeesMsg;
-  resultDiv.appendChild(countAttendeesNode);
-
+  outputDiv.appendChild(countAttendeesNode);
 
   const list2LengthMsg = `סה״כ מדריכים: ${list2Length}`;
   const list2LengthNode = document.createElement("p");
   list2LengthNode.textContent = list2LengthMsg;
-  resultDiv.appendChild(list2LengthNode);
+  outputDiv.appendChild(list2LengthNode);
 
   const dateTimeNode = document.createElement("p");
   const currentDateTime = new Date();
   const formattedDateTime = currentDateTime.toLocaleString("he-IL");
   dateTimeNode.textContent = formattedDateTime;
-  resultDiv.appendChild(dateTimeNode);
+  outputDiv.appendChild(dateTimeNode);
 }
+
 
 function copyLists() {
   const listsTextarea = document.querySelector("#result textarea");
@@ -151,10 +154,11 @@ function displayNumbers() {
 
     listItem.appendChild(document.createTextNode(' ')); // Add a space
 
-    const removeButton = document.createElement('button');
-    removeButton.textContent = '-';
-    removeButton.addEventListener('click', () => removeNumber(number));
-    listItem.appendChild(removeButton);
+const removeButton = document.createElement('button');
+removeButton.textContent = '-';
+removeButton.id = 'removeButton'; // Add the ID attribute to the button
+removeButton.addEventListener('click', () => removeNumber(number));
+listItem.appendChild(removeButton);
 
     numberListElement.appendChild(listItem);
   }
@@ -207,3 +211,36 @@ function toggleDivVisibility() {
     div.style.display = 'none';
   }
 }
+
+// Get the info popup element
+const infoPopup = document.getElementById("infoPopup");
+
+let offsetX, offsetY, isDragging = false;
+
+// Function to handle the start of dragging
+function startDragging(event) {
+  isDragging = true;
+  offsetX = event.clientX - infoPopup.offsetLeft;
+  offsetY = event.clientY - infoPopup.offsetTop;
+}
+
+// Function to handle the end of dragging
+function stopDragging() {
+  isDragging = false;
+}
+
+// Function to handle the dragging movement
+function drag(event) {
+  if (isDragging) {
+    const x = event.clientX - offsetX;
+    const y = event.clientY - offsetY;
+    infoPopup.style.left = `${x}px`;
+    infoPopup.style.top = `${y}px`;
+  }
+}
+
+// Add event listeners for dragging
+infoPopup.addEventListener("mousedown", startDragging);
+window.addEventListener("mouseup", stopDragging);
+window.addEventListener("mousemove", drag);
+
