@@ -326,5 +326,15 @@ textarea, select, input[type="text"] {
 }
 
 
+    /* Remove the bullet points from the list */
+    #numberList {
+      list-style-type: none;
+    }
+
+    /* Display the list items in LTR direction */
+    #numberList li {
+      direction: ltr;
+      font-size: 14px; /* Adjust the font size as needed */
+    }
 
 

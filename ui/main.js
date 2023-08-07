@@ -149,16 +149,16 @@ function displayNumbers() {
   for (const number of numbers) {
     const listItem = document.createElement('li');
 
-    const numberText = document.createTextNode(number);
-    listItem.appendChild(numberText);
+    const removeButton = document.createElement('button');
+    removeButton.textContent = '-';
+    removeButton.id = 'removeButton'; // Add the ID attribute to the button
+    removeButton.addEventListener('click', () => removeNumber(number));
+    listItem.appendChild(removeButton);
 
     listItem.appendChild(document.createTextNode(' ')); // Add a space
 
-const removeButton = document.createElement('button');
-removeButton.textContent = '-';
-removeButton.id = 'removeButton'; // Add the ID attribute to the button
-removeButton.addEventListener('click', () => removeNumber(number));
-listItem.appendChild(removeButton);
+    const numberText = document.createTextNode(number);
+    listItem.appendChild(numberText);
 
     numberListElement.appendChild(listItem);
   }
@@ -168,16 +168,19 @@ listItem.appendChild(removeButton);
   excludeNumbersSection.style.display = 'block';
 }
 
-function addNumber() {
-  const newNumberInput = document.getElementById('newNumber');
-  const newNumber = newNumberInput.value.trim();
+  function addNumber() {
+    const newNumberInput = document.getElementById('newNumber');
+    const newNumber = newNumberInput.value.trim();
 
-  // Check if the input is a valid 10-digit number
-  const numberRegex = /^\d{10}$/;
-  if (!numberRegex.test(newNumber)) {
-    alert('מספר לא תקין. אנא הכנס/י מספר בעל 10 ספרות.');
-    return;
-  }
+    // Check if the input is a valid 10-digit number or in the format +972 53-424-9344
+    const numberRegex = /^(\+972\s?)?(\d{2,3}[- ]?)?\d{3}[- ]?\d{4}$/;
+    if (!numberRegex.test(newNumber)) {
+      alert(
+        'מספר לא תקין. אנא הכנס/י מספר בעל 10 ספרות או בפורמט +972 89-567-1234.'
+      );
+      return;
+    }
+
 
   // Add the number to the list
   numbers.push(newNumber);
