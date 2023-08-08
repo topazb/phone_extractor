@@ -2,3 +2,5 @@ Flask==2.0.1
 Flask_cors
 gspread
 oauth2client
+psycopg2
+os
