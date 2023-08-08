@@ -26,7 +26,8 @@ def process_text():
         num_lists = request.json['num_lists']
         exclude_numbers = request.json['exclude_numbers']
 
-        logging.info("Received a request to process text from IP: %s", request.remote_addr)
+        logging.info("Received a request to process text from IP: %s",
+                     request.headers.get('X-Forwarded-For', request.remote_addr))
 
         phone_numbers1 = extract_phone_numbers(text1)
         phone_numbers_instructors = extract_phone_numbers_sheet()
