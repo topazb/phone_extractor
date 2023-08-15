@@ -22,7 +22,7 @@ def extract_phone_numbers_sheet():
     for row in data_sheet1[1:]:  # Start from the second row to skip the header row
         phone_number = row[2]  # Assuming the phone number is in the third column (index 2)
         phone_number = phone_number.replace("טלפון", "").replace("-", "").strip()
-        if phone_number:  # Add only non-empty phone numbers
+        if phone_number or '-' not in row[2]:  # Add non-empty phone numbers and numbers without hyphens
             phone_numbers.append(phone_number)
 
     # Get data from sheet 2
@@ -33,7 +33,6 @@ def extract_phone_numbers_sheet():
     for row in data_sheet2[1:]:
         phone_number = row[1]  # Assuming the phone number is in the second column (index 1)
         phone_number = phone_number.replace("טלפון", "").replace("-", "").strip()
-        if phone_number:  # Add only non-empty phone numbers
+        if phone_number or '-' not in row[2]:  # Add non-empty phone numbers and numbers without hyphens
             phone_numbers.append(phone_number)
-
     return phone_numbers
