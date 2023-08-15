@@ -10,7 +10,7 @@ class TestApp(unittest.TestCase):
     def test_process_text_endpoint(self):
         # Test case 1: Valid input data
         data = {
-            'text1': 'Text with phone number +972123456789 and +972987654321',
+            'text1': 'Text with phone number +972 123456789 and +972 987654321',
             'text2': 'Instructor 1\nInstructor 2',
             'num_lists': 2,
             'exclude_numbers': ['+972987654321']
