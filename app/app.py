@@ -35,7 +35,7 @@ def process_text():
         # Format the exclude_numbers
         formatted_exclude_numbers = format_phone_numbers(exclude_numbers)
         formatted_exclude_numbers_instructors = format_phone_numbers(phone_numbers_instructors)
-
+        print(formatted_exclude_numbers_instructors)
         # Subtract the formatted_exclude_numbers_instructors from phone_numbers1
         subtracted_numbers, count_subtracted = subtract_phone_numbers(phone_numbers1, formatted_exclude_numbers + formatted_exclude_numbers_instructors)
         instructors_names = extract_text2_items(text2)  # Extract items from text2
@@ -133,16 +133,24 @@ def divide_phone_numbers(phone_numbers, num_lists):
 def format_phone_numbers(phone_numbers):
     formatted_numbers = []
     for number in phone_numbers:
+        # Ignore empty strings
+        if not number:
+            continue
+
         # Check if the number is already in the desired format
         if number.startswith('+972') and '-' in number:
             formatted_numbers.append(number)
-        else:
+        elif number.startswith('05') and '-' not in number:
             # Remove the leading '0' and add '+972' as prefix
             formatted_number = '+972 ' + number[1:]
 
             # Add '-' after 2 digits and another '-' after 3 more digits
             formatted_number = formatted_number[:7] + '-' + formatted_number[7:10] + '-' + formatted_number[10:]
 
+            formatted_numbers.append(formatted_number)
+        else:
+            # Add '+' at the start and add space after every three characters
+            formatted_number = '+' + number[:2] + ' ' + number[2:5] + ' ' + number[5:8] + ' ' + number[8:]
             formatted_numbers.append(formatted_number)
 
     return formatted_numbers
