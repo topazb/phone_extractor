@@ -1,8 +1,10 @@
 import logging
-from flask import Flask, request, jsonify
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 import re
 from read_from_sheet import extract_phone_numbers_sheet
+from page_review import handle_requests
+
 
 app = Flask(__name__)
 CORS(app)
@@ -160,6 +162,21 @@ def extract_text2_items(text):
     items = text.strip().split('\n')
 
     return items
+
+# Define a route to handle the page_review task
+@app.route('/page_review', methods=['POST'])
+def page_review():
+    try:
+        data = request.json
+        success, message = handle_requests(data)  # Call the updated function
+
+        if success:
+            return jsonify({"success": True, "message": message}), 200
+        else:
+            return jsonify({"success": False, "message": message}), 400
+    except Exception as e:
+        return jsonify({"success": False, "message": str(e)}), 500
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
