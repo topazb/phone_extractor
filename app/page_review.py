@@ -6,6 +6,10 @@ import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()  # Load environment variables from .env file
+
 
 app = Flask(__name__)
 
@@ -14,8 +18,8 @@ ENABLE_NOTIFICATIONS = True
 
 # Define SMTP and email variables
 SMTP_SERVER = os.environ.get('SMTP_SERVER')
-SMTP_PORT = 587
-SENDER_EMAIL = 'your_sender_email@gmail.com'
+SMTP_PORT = 25
+SENDER_EMAIL = 'challenge22@alwaysdata.net'
 SENDER_EMAIL_PASSWORD = os.environ.get('SENDER_EMAIL_PASSWORD')
 RECIPIENT_EMAIL = 'topazb@gmail.com'
 
@@ -38,6 +42,13 @@ def toggle_notifications():
 
 # Function to send an email with additional data from the incoming request
 def send_email(subject, body, page_author, page_url, page_title):
+    # Create an SMTP connection with TLS encryption
+    smtp_server = smtplib.SMTP(SMTP_SERVER, SMTP_PORT)
+    smtp_server.starttls()  # Start TLS encryption
+
+    # Authenticate with your SMTP server (if required)
+    smtp_server.login(SENDER_EMAIL, SENDER_EMAIL_PASSWORD)
+
     msg = MIMEMultipart()
     msg['From'] = SENDER_EMAIL
     msg['To'] = RECIPIENT_EMAIL
@@ -66,10 +77,10 @@ def send_email(subject, body, page_author, page_url, page_title):
 
 # Function to handle the incoming request
 def handle_requests(data):
-    page_id = data.get('page_id')
-    page_author = data.get('page_author')
-    page_url = data.get('page_url')
-    page_title = data.get('page_title')
+    page_id = data["related_item"]["id"]
+    page_author = data["triggered_by"]["name"]
+    page_url = data["url"]
+    page_title = data["text"]
 
     if page_id is None:
         return False, 'Missing page_id in incoming request data'
@@ -78,6 +89,7 @@ def handle_requests(data):
     if ENABLE_NOTIFICATIONS:
         # Construct the PUT URL using the template
         put_url = PUT_URL_TEMPLATE.format(page_id)
+        print(put_url)
 
         # Example: Define PUT data (modify as needed)
         put_data = {
@@ -86,7 +98,6 @@ def handle_requests(data):
 
         # Get the authorization token from an environment variable
         authorization_token = os.environ.get('AUTHORIZATION_TOKEN')
-
         # Ensure the authorization token is not None before adding it to the header
         if authorization_token is not None:
             custom_header = {
