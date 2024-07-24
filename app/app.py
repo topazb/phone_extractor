@@ -13,6 +13,7 @@ CORS(app)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 @app.route('/process_text', methods=['POST', 'OPTIONS'])
+@app.route('/process_text', methods=['POST', 'OPTIONS'])
 def process_text():
     if request.method == 'OPTIONS':
         response = jsonify({'message': 'CORS preflight request handled'})
@@ -22,6 +23,8 @@ def process_text():
         return response
 
     try:
+        logging.info("Processing text...")
+
         # Handle the POST request and extract phone numbers
         text1 = request.json['text1']
         text2 = request.json['text2']
@@ -31,37 +34,45 @@ def process_text():
         logging.info("Received a request to process text from IP: %s",
                      request.headers.get('X-Forwarded-For', request.remote_addr))
 
+        logging.debug("Extracting phone numbers from text1...")
         phone_numbers1 = extract_phone_numbers(text1)
+        
+        logging.debug("Extracting phone numbers from sheet...")
         phone_numbers_instructors = extract_phone_numbers_sheet()
 
-        # Format the exclude_numbers
+        logging.debug("Formatting exclude numbers...")
         formatted_exclude_numbers = format_phone_numbers(exclude_numbers)
         formatted_exclude_numbers_instructors = format_phone_numbers(phone_numbers_instructors)
-        print(formatted_exclude_numbers_instructors)
-        # Subtract the formatted_exclude_numbers_instructors from phone_numbers1
+        logging.debug("Formatted exclude numbers: %s", formatted_exclude_numbers_instructors)
+
+        logging.debug("Subtracting phone numbers...")
         subtracted_numbers, count_subtracted = subtract_phone_numbers(phone_numbers1, formatted_exclude_numbers + formatted_exclude_numbers_instructors)
+        
+        logging.debug("Extracting items from text2...")
         instructors_names = extract_text2_items(text2)  # Extract items from text2
 
-        # Count the whole Whatsapp group
+        logging.debug("Counting unique phone numbers and names...")
         total_count = count_unique_phone_numbers_and_names(text1)
 
         if num_lists > 0:
+            logging.debug("Dividing phone numbers into %d lists...", num_lists)
             divided_lists = divide_phone_numbers(subtracted_numbers, num_lists)  # Divide into num_lists lists
         elif len(instructors_names) > 0:
+            logging.debug("Dividing phone numbers into %d lists based on instructors names...", len(instructors_names))
             divided_lists = divide_phone_numbers(subtracted_numbers, len(instructors_names))  # Divide into instructors_names lists
         else:
             num_lists = max(1, num_lists)  # Set num_lists to at least 1
+            logging.debug("Dividing phone numbers into %d lists...", num_lists)
             divided_lists = divide_phone_numbers(subtracted_numbers, num_lists)  # Divide into num_lists lists
 
         # Prepare the response
         response_data = {
-            'num_phones': total_count+1,
+            'num_phones': total_count + 1,
             'phone_lists': divided_lists,
             'count_attendees': len(subtracted_numbers),
             'text2_items': instructors_names,
             'list2_length': len(instructors_names),
             'count_subtracted': count_subtracted  # Include the count of subtracted numbers in the response
-
         }
 
         logging.info("Processed the request successfully.")
