@@ -1,5 +1,10 @@
+import logging
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+
+# Set up logging
+logging.basicConfig(level=logging.DEBUG)
+
 
 def extract_phone_numbers_sheet():
     # Define the scope and credentials
@@ -7,32 +12,58 @@ def extract_phone_numbers_sheet():
              'https://www.googleapis.com/auth/drive']
     credentials = ServiceAccountCredentials.from_json_keyfile_name('credentials.json', scope)
 
-    # Authorize the client
-    client = gspread.authorize(credentials)
+    try:
+        # Authorize the client
+        client = gspread.authorize(credentials)
 
-    # Open the Google Sheet by its title
-    spreadsheet = client.open('פרטי מדריכים אתגר 22')
+        # Open the Google Sheet by its title
+        spreadsheet = client.open('פרטי מדריכים אתגר 22')
+        logging.debug("Successfully connected to the Google Sheet")
 
-    # Get data from sheet 1
-    sheet1 = spreadsheet.sheet1
-    data_sheet1 = sheet1.get_all_values()
+        # Function to clean and validate phone numbers
+        def clean_phone_number(phone_number):
+            if phone_number:
+                phone_number = phone_number.replace("טלפון", "").replace("-", "").strip()
+                return phone_number if phone_number and phone_number.isdigit() else None
+            return None
 
-    # Extract and trim phone numbers from sheet 1
-    phone_numbers = []
-    for row in data_sheet1[1:]:  # Start from the second row to skip the header row
-        phone_number = row[2]  # Assuming the phone number is in the third column (index 2)
-        phone_number = phone_number.replace("טלפון", "").replace("-", "").strip()
-        if phone_number or '-' not in row[2]:  # Add non-empty phone numbers and numbers without hyphens
-            phone_numbers.append(phone_number)
+        # Function to extract phone numbers from a given sheet
+        def extract_numbers_from_sheet(sheet, column_index):
+            phone_numbers = []
+            try:
+                data = sheet.get_all_values()
+                for row in data[1:]:  # Skip the header row
+                    phone_number = clean_phone_number(row[column_index])
+                    if phone_number:
+                        phone_numbers.append(phone_number)
+            except Exception as e:
+                logging.error(f"Error processing sheet: {e}")
+                return []
+            return phone_numbers
 
-    # Get data from sheet 2
-    sheet2 = spreadsheet.get_worksheet(1)  # Index 1 corresponds to the second sheet (0-indexed)
-    data_sheet2 = sheet2.get_all_values()
+        # Extract phone numbers from sheet 1
+        phone_numbers = extract_numbers_from_sheet(spreadsheet.sheet1, 2)
 
-    # Extract and trim phone numbers from sheet 2
-    for row in data_sheet2[1:]:
-        phone_number = row[1]  # Assuming the phone number is in the second column (index 1)
-        phone_number = phone_number.replace("טלפון", "").replace("-", "").strip()
-        if phone_number or '-' not in row[2]:  # Add non-empty phone numbers and numbers without hyphens
-            phone_numbers.append(phone_number)
-    return phone_numbers
+        # Extract phone numbers from sheet 2
+        sheet2 = spreadsheet.get_worksheet(1)
+        more_phone_numbers = extract_numbers_from_sheet(sheet2, 1)
+
+        # Combine phone numbers from both sheets
+        if more_phone_numbers:  # Check if more_phone_numbers is not None or empty
+            phone_numbers.extend(more_phone_numbers)
+
+        logging.debug(f"Extracted phone numbers: {phone_numbers}")
+        return phone_numbers
+
+    except Exception as e:
+        logging.error(f"Error during processing: {e}")
+        return []
+
+
+# Run the function
+phone_numbers = extract_phone_numbers_sheet()
+
+if phone_numbers:
+    logging.debug(f"Final phone numbers list: {phone_numbers}")
+else:
+    logging.error("No phone numbers were extracted.")
